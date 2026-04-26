@@ -1,1 +1,821 @@
+DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MidPaper Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #141720;
+    --surface2: #1c2030;
+    --border: #272c3e;
+    --accent: #f0c060;
+    --accent2: #5b8cff;
+    --accent3: #ff6b6b;
+    --text: #e8eaf0;
+    --muted: #7a80a0;
+    --success: #4ecb8d;
+    --radius: 12px;
+  }
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* Header */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13, 15, 20, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-dot {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .header-nav {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .nav-count {
+    font-size: 0.75rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    padding: 5rem 2rem 3rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(240,192,96,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 em {
+    font-family: 'Syne', sans-serif;
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Upload section */
+  .upload-section {
+    max-width: 720px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .upload-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .upload-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3));
+  }
+
+  .upload-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    background: rgba(240,192,96,0.15);
+    color: var(--accent);
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+    border: 1px solid rgba(240,192,96,0.3);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  input, select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    appearance: none;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(240,192,96,0.1);
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a80a0' stroke-width='2'%3E%3Cpolyline points='6,9 12,15 18,9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+
+  select option { background: var(--surface2); }
+
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    color: #0d0f14;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: transform 0.15s, box-shadow 0.15s;
+    letter-spacing: 0.01em;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(240,192,96,0.25);
+  }
+
+  .submit-btn:active { transform: translateY(0); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--success);
+    color: #0d0f14;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 999;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Papers section */
+  .papers-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+  }
+
+  /* Filter bar */
+  .filter-bar {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent);
+    color: #0d0f14;
+    border-color: var(--accent);
+  }
+
+  /* Search */
+  .search-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .search-wrap input {
+    padding-left: 36px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* Department groups */
+  .dept-group {
+    margin-bottom: 2.5rem;
+  }
+
+  .dept-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dept-label {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .dept-tag {
+    font-size: 0.65rem;
+    background: rgba(91,140,255,0.15);
+    color: var(--accent2);
+    padding: 3px 8px;
+    border-radius: 20px;
+    border: 1px solid rgba(91,140,255,0.3);
+  }
+
+  .papers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  /* Paper card */
+  .paper-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+    animation: fadeIn 0.4s ease both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .paper-card:hover {
+    border-color: rgba(240,192,96,0.4);
+    transform: translateY(-2px);
+  }
+
+  .paper-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .paper-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .paper-type {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-family: 'DM Mono', monospace;
+    flex-shrink: 0;
+  }
+
+  .type-midsem {
+    background: rgba(240,192,96,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(240,192,96,0.3);
+  }
+
+  .type-final {
+    background: rgba(255,107,107,0.15);
+    color: var(--accent3);
+    border: 1px solid rgba(255,107,107,0.3);
+  }
+
+  .paper-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .meta-chip {
+    font-size: 0.68rem;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .paper-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+  }
+
+  .btn-view {
+    flex: 1;
+    padding: 8px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .btn-view:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .btn-copy {
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-copy:hover {
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--muted);
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+  }
+
+  .empty-state p { font-size: 0.85rem; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .filter-bar { gap: 0.4rem; }
+    .section-header { flex-direction: column; align-items: flex-start; }
+    .search-wrap { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    MidPaper<span style="color:var(--accent)">Hub</span>
+  </div>
+  <div class="header-nav">
+    <span class="nav-count" id="totalCount">0 papers</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <h1>Your VGEC mid sem<br>exam papers,<br>all in one place.</h1>
+  <p>Upload a link to any mid-semester paper — it gets categorized automatically by department, course, and semester.</p>
+  <p style="font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; letter-spacing:0.15em; color:var(--accent); margin-bottom:2.5rem;">LETS HELP EACH OTHER 🤝</p>
+</section>
+
+<!-- Upload Form -->
+<div class="upload-section">
+  <div class="upload-card">
+    <h2>
+      ↑ Share a Paper
+      <span class="badge">open to all</span>
+    </h2>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>All Paper in 1 File Link (Google Drive, Dropbox, etc.)</label>
+        <input type="url" id="paperLink" placeholder="https://drive.google.com/..." />
+      </div>
+      <div class="form-group">
+        <label>Department</label>
+        <select id="dept">
+          <option value="">Select department</option>
+          <option>Computer Science</option>
+          <option>Data Science</option>
+          <option>Electrical Engineering</option>
+          <option>Electronics and Communication Engineering</option>
+          <option>Mechanical Engineering</option>
+          <option>Civil Engineering</option>
+          <option>Chemical Engineering</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Semester</label>
+        <select id="semester">
+          <option value="">Select semester</option>
+          <option>Semester 1</option>
+          <option>Semester 2</option>
+          <option>Semester 3</option>
+          <option>Semester 4</option>
+          <option>Semester 5</option>
+          <option>Semester 6</option>
+          <option>Semester 7</option>
+          <option>Semester 8</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Code of Elective Subject Present in File (write No if not any)</label>
+        <input type="text" id="subjectCode" placeholder="e.g. 3160915 or No" oninput="this.value = this.value.replace(/[^0-9Nn]/g, '').replace(/^[Nn].*/, m => 'No')" maxlength="10" />
+      </div>
+      <div class="form-group">
+        <label>1st Date of Exam</label>
+        <input type="date" id="examDate" />
+      </div>
+    </div>
+    <button class="submit-btn" onclick="submitPaper()">+ Add Paper to Hub</button>
+  </div>
+</div>
+
+<!-- Papers Section -->
+<div class="papers-section">
+  <div class="section-header">
+    <div class="section-title">Browse Papers</div>
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="searchInput" placeholder="Search courses, codes..." oninput="renderPapers()" />
+    </div>
+  </div>
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" onclick="setFilter('All', this)">All</button>
+  </div>
+  <div style="height:1.5rem"></div>
+  <div id="papersContainer"></div>
+</div>
+
+<div class="toast" id="toast">✓ Paper added successfully!</div>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDFDSgj-AYy6pHTiz0enlcu1gs2PjBF4bw",
+    authDomain: "vgec-midsem.firebaseapp.com",
+    projectId: "vgec-midsem",
+    storageBucket: "vgec-midsem.firebasestorage.app",
+    messagingSenderId: "329251861456",
+    appId: "1:329251861456:web:9cdcb4f15e8617d292ffd5",
+    measurementId: "G-D43S89YM3V"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  let papers = [];
+  let activeFilter = 'All';
+
+  // ── Real-time listener: updates whenever anyone adds a paper ──
+  const q = query(collection(db, "papers"), orderBy("createdAt", "desc"));
+  onSnapshot(q, (snapshot) => {
+    papers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    updateFilterBar();
+    updateStats();
+    renderPapers();
+  });
+
+  // ── Show loading state on start ──
+  document.getElementById('papersContainer').innerHTML = `
+    <div class="empty-state">
+      <span class="empty-icon" style="animation: pulse 1s infinite;">⏳</span>
+      <p>Loading papers...</p>
+    </div>`;
+
+  window.setFilter = function(f, el) {
+    activeFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    renderPapers();
+  };
+
+  function updateFilterBar() {
+    const depts = ['All', ...new Set(papers.map(p => p.dept))];
+    const bar = document.getElementById('filterBar');
+    bar.innerHTML = depts.map(d =>
+      `<button class="filter-btn ${d === activeFilter ? 'active' : ''}" onclick="setFilter('${d}', this)">${d}</button>`
+    ).join('');
+  }
+
+  function updateStats() {
+    const total = papers.length;
+    document.getElementById('totalCount').textContent = `${total} paper${total !== 1 ? 's' : ''}`;
+  }
+
+  function renderPapers() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = papers.filter(p => {
+      const matchFilter = activeFilter === 'All' || p.dept === activeFilter;
+      const matchSearch = !search ||
+        (p.title || '').toLowerCase().includes(search) ||
+        (p.code || '').toLowerCase().includes(search) ||
+        (p.dept || '').toLowerCase().includes(search) ||
+        (p.semester || '').toLowerCase().includes(search);
+      return matchFilter && matchSearch;
+    });
+
+    const container = document.getElementById('papersContainer');
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <span class="empty-icon">📄</span>
+          <p>No papers found.<br>Be the first to upload one!</p>
+        </div>`;
+      return;
+    }
+
+    const groups = {};
+    filtered.forEach(p => {
+      if (!groups[p.dept]) groups[p.dept] = [];
+      groups[p.dept].push(p);
+    });
+
+    container.innerHTML = Object.entries(groups).map(([dept, dPapers]) => `
+      <div class="dept-group">
+        <div class="dept-header">
+          <span class="dept-label">${dept}</span>
+          <span class="dept-tag">${dPapers.length} paper${dPapers.length !== 1 ? 's' : ''}</span>
+        </div>
+        <div class="papers-grid">
+          ${dPapers.map(p => paperCard(p)).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function paperCard(p) {
+    const safeLink = (p.link || '').replace(/'/g, "\\'");
+    return `
+      <div class="paper-card">
+        <div class="paper-top">
+          <div class="paper-title">${p.title || p.dept + ' — ' + p.semester}</div>
+          <span class="paper-type type-midsem">Mid-Sem</span>
+        </div>
+        <div class="paper-meta">
+          <span class="meta-chip">📚 ${p.code || 'N/A'}</span>
+          <span class="meta-chip">🗓 ${p.semester}</span>
+          ${p.date ? `<span class="meta-chip">📅 ${p.date}</span>` : ''}
+        </div>
+        <div class="paper-actions">
+          <a href="${p.link}" target="_blank" class="btn-view">↗ Open Paper</a>
+          <button class="btn-copy" onclick="copyLink('${safeLink}', this)" title="Copy link">⎘</button>
+        </div>
+      </div>`;
+  }
+
+  window.copyLink = function(link, btn) {
+    navigator.clipboard.writeText(link).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓';
+      btn.style.color = 'var(--success)';
+      setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 1500);
+    });
+  };
+
+  window.submitPaper = async function() {
+    const link     = document.getElementById('paperLink').value.trim();
+    const dept     = document.getElementById('dept').value;
+    const semester = document.getElementById('semester').value;
+    const code     = document.getElementById('subjectCode').value.trim();
+    const examDate = document.getElementById('examDate').value;
+
+    if (!link || !dept || !semester) {
+      alert('Please fill in all required fields (link, department, semester).');
+      return;
+    }
+
+    const btn = document.querySelector('.submit-btn');
+    btn.textContent = 'Saving...';
+    btn.disabled = true;
+
+    try {
+      await addDoc(collection(db, "papers"), {
+        title: `${dept} — ${semester}`,
+        link,
+        dept,
+        semester,
+        code: code || 'N/A',
+        type: 'Mid-Sem',
+        date: examDate || '',
+        createdAt: serverTimestamp()
+      });
+
+      ['paperLink','subjectCode','examDate'].forEach(id => document.getElementById(id).value = '');
+      ['dept','semester'].forEach(id => document.getElementById(id).value = '');
+
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    } catch (err) {
+      alert('Error saving paper: ' + err.message);
+    }
+
+    btn.textContent = '+ Add Paper to Hub';
+    btn.disabled = false;
+  };
+
+  // Search live
+  document.getElementById('searchInput').addEventListener('input', renderPapers);
+</script>
+</body>
+</html>
