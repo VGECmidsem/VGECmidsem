@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -21,690 +20,689 @@
     --radius: 12px;
   }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-background: var(–bg);
-color: var(–text);
-font-family: ‘DM Mono’, monospace;
-min-height: 100vh;
-overflow-x: hidden;
-}
-
-/* Noise overlay */
-body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
-pointer-events: none;
-z-index: 0;
-opacity: 0.4;
-}
-
-/* Header */
-header {
-position: sticky;
-top: 0;
-z-index: 100;
-background: rgba(13, 15, 20, 0.85);
-backdrop-filter: blur(20px);
-border-bottom: 1px solid var(–border);
-padding: 0 2rem;
-display: flex;
-align-items: center;
-justify-content: space-between;
-height: 64px;
-}
-
-.logo {
-font-family: ‘Syne’, sans-serif;
-font-weight: 800;
-font-size: 1.3rem;
-letter-spacing: -0.02em;
-display: flex;
-align-items: center;
-gap: 10px;
-}
-
-.logo-dot {
-width: 10px; height: 10px;
-background: var(–accent);
-border-radius: 50%;
-animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-0%, 100% { opacity: 1; transform: scale(1); }
-50% { opacity: 0.5; transform: scale(0.8); }
-}
-
-.header-nav {
-display: flex;
-gap: 1.5rem;
-align-items: center;
-}
-
-.nav-count {
-font-size: 0.75rem;
-color: var(–muted);
-border: 1px solid var(–border);
-padding: 4px 10px;
-border-radius: 20px;
-}
-
-/* Hero */
-.hero {
-position: relative;
-padding: 5rem 2rem 3rem;
-text-align: center;
-overflow: hidden;
-}
-
-.hero-glow {
-position: absolute;
-top: -100px;
-left: 50%;
-transform: translateX(-50%);
-width: 600px;
-height: 400px;
-background: radial-gradient(ellipse, rgba(240,192,96,0.12) 0%, transparent 70%);
-pointer-events: none;
-}
-
-.hero h1 {
-font-family: ‘Syne’, sans-serif;
-font-size: clamp(2.5rem, 6vw, 4.5rem);
-font-weight: 800;
-line-height: 1.05;
-letter-spacing: -0.03em;
-margin-bottom: 1rem;
-}
-
-.hero h1 em {
-font-family: ‘Syne’, sans-serif;
-font-style: normal;
-color: var(–accent);
-}
-
-.hero p {
-color: var(–muted);
-font-size: 0.95rem;
-max-width: 500px;
-margin: 0 auto 2.5rem;
-line-height: 1.7;
-}
-
-.hero-stats {
-display: flex;
-justify-content: center;
-gap: 3rem;
-margin-bottom: 3rem;
-}
-
-.stat {
-text-align: center;
-}
-
-.stat-num {
-font-family: ‘Syne’, sans-serif;
-font-size: 2rem;
-font-weight: 800;
-color: var(–accent);
-display: block;
-}
-
-.stat-label {
-font-size: 0.7rem;
-color: var(–muted);
-text-transform: uppercase;
-letter-spacing: 0.1em;
-}
-
-/* Upload section */
-.upload-section {
-max-width: 100%;
-margin: 0 auto 4rem;
-padding: 0 1rem;
-position: relative;
-z-index: 1;
-}
-
-.upload-card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: var(–radius);
-padding: 2rem;
-position: relative;
-overflow: hidden;
-}
-
-.upload-card::before {
-content: ‘’;
-position: absolute;
-top: 0; left: 0; right: 0;
-height: 2px;
-background: linear-gradient(90deg, var(–accent2), var(–accent), var(–accent3));
-}
-
-.upload-card h2 {
-font-family: ‘Syne’, sans-serif;
-font-weight: 700;
-font-size: 1.1rem;
-margin-bottom: 1.5rem;
-display: flex;
-align-items: center;
-gap: 8px;
-}
-
-.badge {
-font-size: 0.65rem;
-background: rgba(240,192,96,0.15);
-color: var(–accent);
-padding: 3px 8px;
-border-radius: 20px;
-font-family: ‘DM Mono’, monospace;
-border: 1px solid rgba(240,192,96,0.3);
-}
-
-.form-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 1rem;
-margin-bottom: 1rem;
-}
-
-.form-group {
-display: flex;
-flex-direction: column;
-gap: 6px;
-}
-
-.form-group.full {
-grid-column: 1 / -1;
-}
-
-label {
-font-size: 0.7rem;
-color: var(–muted);
-text-transform: uppercase;
-letter-spacing: 0.08em;
-}
-
-input, select {
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 8px;
-padding: 10px 14px;
-color: var(–text);
-font-family: ‘DM Mono’, monospace;
-font-size: 0.85rem;
-outline: none;
-transition: border-color 0.2s, box-shadow 0.2s;
-width: 100%;
-appearance: none;
-}
-
-input:focus, select:focus {
-border-color: var(–accent);
-box-shadow: 0 0 0 3px rgba(240,192,96,0.1);
-}
-
-select {
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘12’ viewBox=‘0 0 24 24’ fill=‘none’ stroke=’%237a80a0’ stroke-width=‘2’%3E%3Cpolyline points=‘6,9 12,15 18,9’/%3E%3C/svg%3E”);
-background-repeat: no-repeat;
-background-position: right 12px center;
-padding-right: 36px;
-cursor: pointer;
-}
-
-select option { background: var(–surface2); }
-
-.submit-btn {
-width: 100%;
-padding: 12px;
-background: var(–accent);
-color: #0d0f14;
-border: none;
-border-radius: 8px;
-font-family: ‘Syne’, sans-serif;
-font-weight: 700;
-font-size: 0.95rem;
-cursor: pointer;
-margin-top: 1rem;
-transition: transform 0.15s, box-shadow 0.15s;
-letter-spacing: 0.01em;
-}
-
-.submit-btn:hover {
-transform: translateY(-1px);
-box-shadow: 0 8px 24px rgba(240,192,96,0.25);
-}
-
-.submit-btn:active { transform: translateY(0); }
-
-/* Toast */
-.toast {
-position: fixed;
-bottom: 2rem;
-left: 50%;
-transform: translateX(-50%) translateY(100px);
-background: var(–success);
-color: #0d0f14;
-padding: 12px 24px;
-border-radius: 8px;
-font-family: ‘Syne’, sans-serif;
-font-weight: 700;
-font-size: 0.9rem;
-z-index: 999;
-transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.toast.show { transform: translateX(-50%) translateY(0); }
-
-/* Guide card */
-.guide-card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: var(–radius);
-padding: 1.75rem;
-position: relative;
-overflow: hidden;
-}
-
-.guide-card::before {
-content: ‘’;
-position: absolute;
-top: 0; left: 0; right: 0;
-height: 2px;
-background: linear-gradient(90deg, var(–accent2), var(–accent));
-}
-
-.guide-title {
-font-family: ‘Syne’, sans-serif;
-font-weight: 800;
-font-size: 1rem;
-color: var(–text);
-margin-bottom: 1.5rem;
-letter-spacing: -0.01em;
-}
-
-.guide-step {
-border-bottom: 1px solid var(–border);
-padding-bottom: 1.25rem;
-margin-bottom: 1.25rem;
-}
-
-.step-header {
-display: flex;
-align-items: center;
-gap: 10px;
-margin-bottom: 0.65rem;
-}
-
-.step-num {
-font-family: ‘DM Mono’, monospace;
-font-weight: 500;
-font-size: 0.65rem;
-color: #0d0f14;
-background: var(–accent);
-padding: 2px 7px;
-border-radius: 4px;
-letter-spacing: 0.05em;
-flex-shrink: 0;
-}
-
-.step-label {
-font-family: ‘Syne’, sans-serif;
-font-weight: 700;
-font-size: 0.9rem;
-color: var(–text);
-}
-
-.step-desc {
-font-family: ‘Syne’, sans-serif;
-font-size: 0.85rem;
-color: var(–muted);
-line-height: 1.7;
-margin-bottom: 0.75rem;
-}
-
-.step-list {
-list-style: none;
-padding: 0;
-display: flex;
-flex-direction: column;
-gap: 0.45rem;
-counter-reset: step-counter;
-overflow-x: auto;
-}
-
-.step-list li {
-counter-increment: step-counter;
-display: flex;
-gap: 8px;
-align-items: center;
-font-family: ‘Syne’, sans-serif;
-font-size: 0.85rem;
-color: var(–muted);
-line-height: 1.7;
-white-space: nowrap;
-}
-
-.step-list li::before {
-content: counter(step-counter);
-font-family: ‘DM Mono’, monospace;
-font-size: 0.6rem;
-color: var(–accent);
-background: rgba(240,192,96,0.1);
-border: 1px solid rgba(240,192,96,0.25);
-border-radius: 3px;
-min-width: 18px;
-width: 18px;
-height: 18px;
-display: inline-flex;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
-margin-top: 0.15rem;
-}
-
-.highlight {
-color: var(–accent);
-font-family: inherit;
-font-size: inherit;
-padding: 0 1px;
-}
-
-.guide-link {
-display: inline-block;
-color: var(–accent2);
-font-family: ‘DM Mono’, monospace;
-font-size: 0.78rem;
-text-decoration: none;
-border-bottom: 1px solid rgba(91,140,255,0.4);
-padding-bottom: 1px;
-word-break: break-all;
-}
-
-.guide-link:hover { color: var(–accent); border-color: var(–accent); }
-
-.field-list {
-display: flex;
-flex-direction: column;
-gap: 0.5rem;
-}
-
-.field-item {
-font-family: ‘Syne’, sans-serif;
-font-size: 0.85rem;
-color: var(–muted);
-line-height: 1.65;
-padding: 8px 12px;
-background: var(–surface2);
-border-radius: 6px;
-border-left: 2px solid var(–accent);
-}
-
-.field-name {
-font-family: ‘Syne’, sans-serif;
-font-weight: 700;
-color: var(–text);
-font-size: 0.8rem;
-}
-
-/* Papers section */
-.papers-section {
-max-width: 1100px;
-margin: 0 auto;
-padding: 0 2rem 5rem;
-position: relative;
-z-index: 1;
-}
-
-.section-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 2rem;
-flex-wrap: wrap;
-gap: 1rem;
-}
-
-.section-title {
-font-family: ‘Syne’, sans-serif;
-font-size: 1.3rem;
-font-weight: 800;
-}
-
-/* Filter bar */
-.filter-bar {
-display: flex;
-gap: 0.6rem;
-flex-wrap: wrap;
-align-items: center;
-}
-
-.filter-btn {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 20px;
-padding: 6px 14px;
-color: var(–muted);
-font-family: ‘DM Mono’, monospace;
-font-size: 0.75rem;
-cursor: pointer;
-transition: all 0.2s;
-white-space: nowrap;
-}
-
-.filter-btn:hover, .filter-btn.active {
-background: var(–accent);
-color: #0d0f14;
-border-color: var(–accent);
-}
-
-/* Search */
-.search-wrap {
-position: relative;
-width: 100%;
-max-width: 320px;
-}
-
-.search-wrap input {
-padding-left: 36px;
-}
-
-.search-icon {
-position: absolute;
-left: 12px;
-top: 50%;
-transform: translateY(-50%);
-color: var(–muted);
-font-size: 0.85rem;
-}
-
-/* Department groups */
-.dept-group {
-margin-bottom: 2.5rem;
-}
-
-.dept-header {
-display: flex;
-align-items: center;
-gap: 12px;
-margin-bottom: 1rem;
-padding-bottom: 0.75rem;
-border-bottom: 1px solid var(–border);
-}
-
-.dept-label {
-font-family: ‘Syne’, sans-serif;
-font-weight: 700;
-font-size: 0.95rem;
-}
-
-.dept-tag {
-font-size: 0.65rem;
-background: rgba(91,140,255,0.15);
-color: var(–accent2);
-padding: 3px 8px;
-border-radius: 20px;
-border: 1px solid rgba(91,140,255,0.3);
-}
-
-.papers-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-gap: 1rem;
-}
-
-/* Paper card */
-.paper-card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: var(–radius);
-padding: 1.25rem;
-display: flex;
-flex-direction: column;
-gap: 0.75rem;
-transition: border-color 0.2s, transform 0.2s;
-animation: fadeIn 0.4s ease both;
-}
-
-@keyframes fadeIn {
-from { opacity: 0; transform: translateY(12px); }
-to { opacity: 1; transform: translateY(0); }
-}
-
-.paper-card:hover {
-border-color: rgba(240,192,96,0.4);
-transform: translateY(-2px);
-}
-
-.paper-top {
-display: flex;
-justify-content: space-between;
-align-items: flex-start;
-gap: 8px;
-}
-
-.paper-title {
-font-family: ‘Syne’, sans-serif;
-font-weight: 700;
-font-size: 0.9rem;
-line-height: 1.3;
-flex: 1;
-}
-
-.paper-type {
-font-size: 0.65rem;
-padding: 3px 8px;
-border-radius: 20px;
-white-space: nowrap;
-font-family: ‘DM Mono’, monospace;
-flex-shrink: 0;
-}
-
-.type-midsem {
-background: rgba(240,192,96,0.15);
-color: var(–accent);
-border: 1px solid rgba(240,192,96,0.3);
-}
-
-.type-final {
-background: rgba(255,107,107,0.15);
-color: var(–accent3);
-border: 1px solid rgba(255,107,107,0.3);
-}
-
-.paper-meta {
-display: flex;
-flex-wrap: wrap;
-gap: 6px;
-}
-
-.meta-chip {
-font-size: 0.68rem;
-color: var(–muted);
-background: var(–surface2);
-padding: 3px 8px;
-border-radius: 4px;
-border: 1px solid var(–border);
-}
-
-.paper-actions {
-display: flex;
-gap: 8px;
-margin-top: auto;
-}
-
-.btn-view {
-flex: 1;
-padding: 8px;
-background: transparent;
-border: 1px solid var(–border);
-border-radius: 6px;
-color: var(–text);
-font-family: ‘DM Mono’, monospace;
-font-size: 0.75rem;
-cursor: pointer;
-text-align: center;
-text-decoration: none;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 6px;
-transition: all 0.2s;
-}
-
-.btn-view:hover {
-border-color: var(–accent);
-color: var(–accent);
-}
-
-.btn-copy {
-padding: 8px 12px;
-background: transparent;
-border: 1px solid var(–border);
-border-radius: 6px;
-color: var(–muted);
-font-family: ‘DM Mono’, monospace;
-font-size: 0.75rem;
-cursor: pointer;
-transition: all 0.2s;
-}
-
-.btn-copy:hover {
-border-color: var(–accent2);
-color: var(–accent2);
-}
-
-/* Empty state */
-.empty-state {
-text-align: center;
-padding: 4rem 2rem;
-color: var(–muted);
-}
-
-.empty-icon {
-font-size: 3rem;
-display: block;
-margin-bottom: 1rem;
-opacity: 0.4;
-}
-
-.empty-state p { font-size: 0.85rem; }
-
-/* Responsive */
-@media (max-width: 600px) {
-.form-grid { grid-template-columns: 1fr; }
-.filter-bar { gap: 0.4rem; }
-.section-header { flex-direction: column; align-items: flex-start; }
-.search-wrap { max-width: 100%; }
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* Header */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13, 15, 20, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-dot {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .header-nav {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .nav-count {
+    font-size: 0.75rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    padding: 5rem 2rem 3rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(240,192,96,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 em {
+    font-family: 'Syne', sans-serif;
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Upload section */
+  .upload-section {
+    max-width: 100%;
+    margin: 0 auto 4rem;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .upload-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .upload-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3));
+  }
+
+  .upload-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    background: rgba(240,192,96,0.15);
+    color: var(--accent);
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+    border: 1px solid rgba(240,192,96,0.3);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  input, select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    appearance: none;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(240,192,96,0.1);
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a80a0' stroke-width='2'%3E%3Cpolyline points='6,9 12,15 18,9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+
+  select option { background: var(--surface2); }
+
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    color: #0d0f14;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: transform 0.15s, box-shadow 0.15s;
+    letter-spacing: 0.01em;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(240,192,96,0.25);
+  }
+
+  .submit-btn:active { transform: translateY(0); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--success);
+    color: #0d0f14;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 999;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Guide card */
+  .guide-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .guide-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+  }
+
+  .guide-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .guide-step {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.65rem;
+  }
+
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    font-size: 0.65rem;
+    color: #0d0f14;
+    background: var(--accent);
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .step-label {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  .step-desc {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .step-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    counter-reset: step-counter;
+    overflow-x: auto;
+  }
+
+  .step-list li {
+    counter-increment: step-counter;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+    white-space: nowrap;
+  }
+
+  .step-list li::before {
+    content: counter(step-counter);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--accent);
+    background: rgba(240,192,96,0.1);
+    border: 1px solid rgba(240,192,96,0.25);
+    border-radius: 3px;
+    min-width: 18px;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .highlight {
+    color: var(--accent);
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0 1px;
+  }
+
+  .guide-link {
+    display: inline-block;
+    color: var(--accent2);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(91,140,255,0.4);
+    padding-bottom: 1px;
+    word-break: break-all;
+  }
+
+  .guide-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  .field-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .field-item {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.65;
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border-left: 2px solid var(--accent);
+  }
+
+  .field-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--text);
+    font-size: 0.8rem;
+  }
+
+  /* Papers section */
+  .papers-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+  }
+
+  /* Filter bar */
+  .filter-bar {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent);
+    color: #0d0f14;
+    border-color: var(--accent);
+  }
+
+  /* Search */
+  .search-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .search-wrap input {
+    padding-left: 36px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* Department groups */
+  .dept-group {
+    margin-bottom: 2.5rem;
+  }
+
+  .dept-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dept-label {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .dept-tag {
+    font-size: 0.65rem;
+    background: rgba(91,140,255,0.15);
+    color: var(--accent2);
+    padding: 3px 8px;
+    border-radius: 20px;
+    border: 1px solid rgba(91,140,255,0.3);
+  }
+
+  .papers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  /* Paper card */
+  .paper-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+    animation: fadeIn 0.4s ease both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .paper-card:hover {
+    border-color: rgba(240,192,96,0.4);
+    transform: translateY(-2px);
+  }
+
+  .paper-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .paper-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .paper-type {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-family: 'DM Mono', monospace;
+    flex-shrink: 0;
+  }
+
+  .type-midsem {
+    background: rgba(240,192,96,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(240,192,96,0.3);
+  }
+
+  .type-final {
+    background: rgba(255,107,107,0.15);
+    color: var(--accent3);
+    border: 1px solid rgba(255,107,107,0.3);
+  }
+
+  .paper-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .meta-chip {
+    font-size: 0.68rem;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .paper-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+  }
+
+  .btn-view {
+    flex: 1;
+    padding: 8px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .btn-view:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .btn-copy {
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-copy:hover {
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--muted);
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+  }
+
+  .empty-state p { font-size: 0.85rem; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .filter-bar { gap: 0.4rem; }
+    .section-header { flex-direction: column; align-items: flex-start; }
+    .search-wrap { max-width: 100%; }
+  }
 </style>
-
 </head>
 <body>
 
@@ -726,52 +724,48 @@ opacity: 0.4;
 </section>
 
 <!-- How To Guide -->
-
 <div class="upload-section" style="margin-bottom:2rem;">
   <div class="guide-card">
     <div class="guide-title">📋 How to Upload Your Papers to VGEC Mid Sem Hub</div>
 
-```
-<div class="guide-step">
-  <div class="step-header">
-    <span class="step-num">01</span>
-    <span class="step-label">Google Drive Guide</span>
-  </div>
-  <p class="step-desc">Gather all the PDF files / images of your mid sem papers on your phone and upload to Google Drive:</p>
-  <ol class="step-list">
-    <li>In Google Drive, tap <span class="highlight">+</span> → <span class="highlight">"Create folder"</span></li>
-    <li>Name it something like <span class="highlight">"CS Sem 3 Mid Sem Papers"</span></li>
-    <li>Tap the <span class="highlight">+ (plus)</span> button at the bottom right</li>
-    <li>Tap <span class="highlight">"Upload"</span></li>
-    <li>Select all your mid sem paper images/pdf at once</li>
-    <li>Wait for upload to complete ✅</li>
-    <li>After uploading go to <span class="highlight">"Files"</span> just below the + button at the bottom right</li>
-    <li>Click on the <span class="highlight">three dots</span> of your folder → <span class="highlight">Manage access</span> → <span class="highlight">Restricted</span> → change it to <span class="highlight">Anyone with the link</span> → select <span class="highlight">Viewer</span></li>
-    <li>Copy the link from the top right corner after selecting Viewer option</li>
-  </ol>
-</div>
+    <div class="guide-step">
+      <div class="step-header">
+        <span class="step-num">01</span>
+        <span class="step-label">Google Drive Guide</span>
+      </div>
+      <p class="step-desc">Gather all the PDF files / images of your mid sem papers on your phone and upload to Google Drive:</p>
+      <ol class="step-list">
+        <li>In Google Drive, tap <span class="highlight">+</span> → <span class="highlight">"Create folder"</span></li>
+        <li>Name it something like <span class="highlight">"CS Sem 3 Mid Sem Papers"</span></li>
+        <li>Tap the <span class="highlight">+ (plus)</span> button at the bottom right</li>
+        <li>Tap <span class="highlight">"Upload"</span></li>
+        <li>Select all your mid sem paper images/pdf at once</li>
+        <li>Wait for upload to complete ✅</li>
+        <li>After uploading go to <span class="highlight">"Files"</span> just below the + button at the bottom right</li>
+        <li>Click on the <span class="highlight">three dots</span> of your folder → <span class="highlight">Manage access</span> → <span class="highlight">Restricted</span> → change it to <span class="highlight">Anyone with the link</span> → select <span class="highlight">Viewer</span></li>
+        <li>Copy the link from the top right corner after selecting Viewer option</li>
+      </ol>
+    </div>
 
-<div class="guide-step" style="border-bottom:none; margin-bottom:0; padding-bottom:0;">
-  <div class="step-header">
-    <span class="step-num">02</span>
-    <span class="step-label">Fill in the form</span>
-  </div>
-  <p class="step-desc">You'll see the <span class="highlight">"Share a Paper"</span> section below. Fill it in:</p>
-  <div class="field-list">
-    <div class="field-item"><span class="field-name">All Paper in 1 File Link</span> → Paste the Google Drive link you copied</div>
-    <div class="field-item"><span class="field-name">Department</span> → Select your department (select Other if not in the list)</div>
-    <div class="field-item"><span class="field-name">Semester</span> → Select your semester</div>
-    <div class="field-item"><span class="field-name">Code of Elective Subject</span> → Type the elective subject code your file has (e.g. <span class="highlight">3160915</span>) or type <span class="highlight">"N"</span> if no elective — to edit use double click</div>
-    <div class="field-item"><span class="field-name">1st Date of Exam</span> → Pick the date when your first exam was</div>
-  </div>
-</div>
-```
+    <div class="guide-step" style="border-bottom:none; margin-bottom:0; padding-bottom:0;">
+      <div class="step-header">
+        <span class="step-num">02</span>
+        <span class="step-label">Fill in the form</span>
+      </div>
+      <p class="step-desc">You'll see the <span class="highlight">"Share a Paper"</span> section below. Fill it in:</p>
+      <div class="field-list">
+        <div class="field-item"><span class="field-name">All Paper in 1 File Link</span> → Paste the Google Drive link you copied</div>
+        <div class="field-item"><span class="field-name">Department</span> → Select your department (select Other if not in the list)</div>
+        <div class="field-item"><span class="field-name">Semester</span> → Select your semester</div>
+        <div class="field-item"><span class="field-name">Code of Elective Subject</span> → Type the elective subject code your file has (e.g. <span class="highlight">3160915</span>) or type <span class="highlight">"N"</span> if no elective — to edit use double click</div>
+        <div class="field-item"><span class="field-name">1st Date of Exam</span> → Pick the date when your first exam was</div>
+      </div>
+    </div>
 
   </div>
 </div>
 
 <!-- Upload Form -->
-
 <div class="upload-section">
   <div class="upload-card">
     <h2>
@@ -829,7 +823,6 @@ opacity: 0.4;
 </div>
 
 <!-- Papers Section -->
-
 <div class="papers-section">
   <div class="section-header">
     <div class="section-title">Browse Papers</div>
@@ -848,7 +841,6 @@ opacity: 0.4;
 <div class="toast" id="toast">✓ Paper added successfully!</div>
 
 <!-- Firebase -->
-
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp }
@@ -1023,6 +1015,5 @@ opacity: 0.4;
   // Search live
   document.getElementById('searchInput').addEventListener('input', renderPapers);
 </script>
-
 </body>
 </html>
