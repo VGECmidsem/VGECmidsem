@@ -757,7 +757,7 @@
         <div class="field-item"><span class="field-name">All Paper in 1 File Link</span> → Paste the Google Drive link you copied</div>
         <div class="field-item"><span class="field-name">Department</span> → Select your department (select Other if not in the list)</div>
         <div class="field-item"><span class="field-name">Semester</span> → Select your semester</div>
-        <div class="field-item"><span class="field-name">Code of Elective Subject</span> → Type the elective subject code your file has (e.g. <span class="highlight">3160915</span>) or type <span class="highlight">"N"</span> if no elective — to edit use double click</div>
+        <div class="field-item"><span class="field-name">Name of Elective Subject</span> → Type the elective subject name your file has or type <span class="highlight">"No"</span> if no elective</div>
         <div class="field-item"><span class="field-name">1st Date of Exam</span> → Pick the date when your first exam was</div>
       </div>
     </div>
@@ -815,8 +815,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Code of Elective Subject Present in File (write No if not any)</label>
-        <input type="text" id="subjectCode" placeholder="e.g. 3160915 or No" oninput="this.value = this.value.replace(/[^0-9Nn]/g, '').replace(/^[Nn].*/, m => 'No')" maxlength="10" />
+        <label>Name of Elective Subject Present in File (write No if not any)</label>
+        <input type="text" id="subjectCode" placeholder="Write elective subject name or No" />
       </div>
       <div class="form-group">
         <label>1st Date of Exam</label>
