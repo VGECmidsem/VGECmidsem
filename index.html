@@ -452,6 +452,192 @@
     font-size: 0.8rem;
   }
 
+  /* Admin panel */
+  .admin-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    z-index: 200;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    transition: all 0.2s;
+  }
+
+  .admin-btn:hover { border-color: var(--accent); transform: scale(1.05); }
+
+  .admin-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 300;
+    backdrop-filter: blur(6px);
+  }
+
+  .admin-overlay.open { display: flex; align-items: center; justify-content: center; padding: 1rem; }
+
+  .admin-modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    width: 100%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .admin-modal::before {
+    content: '';
+    position: sticky;
+    top: 0;
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent3), var(--accent));
+  }
+
+  .admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 2px;
+    background: var(--surface);
+    z-index: 1;
+  }
+
+  .admin-header h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .admin-close {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px 10px;
+    transition: all 0.2s;
+  }
+
+  .admin-close:hover { border-color: var(--accent3); color: var(--accent3); }
+
+  .admin-login {
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .admin-login p { font-size: 0.82rem; color: var(--muted); font-family: 'Syne', sans-serif; }
+
+  .admin-papers { padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .admin-paper-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .admin-paper-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+
+  .admin-paper-meta {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .admin-paper-actions { display: flex; gap: 8px; margin-top: 4px; }
+
+  .btn-edit {
+    flex: 1;
+    padding: 7px;
+    background: rgba(91,140,255,0.1);
+    border: 1px solid rgba(91,140,255,0.3);
+    border-radius: 6px;
+    color: var(--accent2);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-edit:hover { background: rgba(91,140,255,0.2); }
+
+  .btn-delete {
+    flex: 1;
+    padding: 7px;
+    background: rgba(255,107,107,0.1);
+    border: 1px solid rgba(255,107,107,0.3);
+    border-radius: 6px;
+    color: var(--accent3);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-delete:hover { background: rgba(255,107,107,0.2); }
+
+  .edit-form {
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .edit-form.open { display: flex; }
+
+  .edit-form input {
+    font-size: 0.78rem;
+    padding: 8px 10px;
+  }
+
+  .btn-save {
+    padding: 8px;
+    background: var(--accent);
+    border: none;
+    border-radius: 6px;
+    color: #0d0f14;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-save:hover { opacity: 0.9; }
+
   /* Papers section */
   .papers-section {
     max-width: 1100px;
@@ -843,12 +1029,35 @@
   <div id="papersContainer"></div>
 </div>
 
+<!-- Admin Button -->
+<button class="admin-btn" onclick="openAdmin()" title="Admin Panel">🔒</button>
+
+<!-- Admin Modal -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-modal">
+    <div class="admin-header">
+      <h3>🔒 Admin Panel</h3>
+      <button class="admin-close" onclick="closeAdmin()">✕ Close</button>
+    </div>
+
+    <!-- Login -->
+    <div class="admin-login" id="adminLogin">
+      <p>Enter admin password to manage papers.</p>
+      <input type="password" id="adminPass" placeholder="Enter password..." />
+      <button class="submit-btn" style="margin-top:0;" onclick="checkPass()">Unlock</button>
+    </div>
+
+    <!-- Papers list (hidden until logged in) -->
+    <div class="admin-papers" id="adminPapers" style="display:none;"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast">✓ Paper added successfully!</div>
 
 <!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp }
+  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, updateDoc, doc }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -870,7 +1079,7 @@
   // ── Real-time listener: updates whenever anyone adds a paper ──
   const q = query(collection(db, "papers"), orderBy("createdAt", "desc"));
   onSnapshot(q, (snapshot) => {
-    papers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    papers = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
     updateFilterBar();
     updateStats();
     renderPapers();
@@ -1019,6 +1228,97 @@
 
   // Search live
   document.getElementById('searchInput').addEventListener('input', renderPapers);
+
+  // ── Admin Panel ──
+  const ADMIN_PASSWORD = 'vgec2024admin';
+  let adminUnlocked = false;
+
+  window.openAdmin = function() {
+    document.getElementById('adminOverlay').classList.add('open');
+    if (adminUnlocked) renderAdminPapers();
+  };
+
+  window.closeAdmin = function() {
+    document.getElementById('adminOverlay').classList.remove('open');
+  };
+
+  window.checkPass = function() {
+    const pass = document.getElementById('adminPass').value;
+    if (pass === ADMIN_PASSWORD) {
+      adminUnlocked = true;
+      document.getElementById('adminLogin').style.display = 'none';
+      document.getElementById('adminPapers').style.display = 'flex';
+      renderAdminPapers();
+    } else {
+      alert('Wrong password!');
+      document.getElementById('adminPass').value = '';
+    }
+  };
+
+  function renderAdminPapers() {
+    const container = document.getElementById('adminPapers');
+    if (papers.length === 0) {
+      container.innerHTML = `<p style="color:var(--muted);font-size:0.82rem;font-family:'Syne',sans-serif;">No papers uploaded yet.</p>`;
+      return;
+    }
+    container.innerHTML = papers.map(p => {
+      const safeTitle = (p.title || '').replace(/"/g, '&quot;');
+      const safeLink  = (p.link  || '').replace(/"/g, '&quot;');
+      const safeCode  = (p.code  || '').replace(/"/g, '&quot;');
+      return `
+        <div class="admin-paper-item" id="admin-${p.id}">
+          <div class="admin-paper-title">${p.title || 'Untitled'}</div>
+          <div class="admin-paper-meta">${p.dept} · ${p.semester} · ${p.date || 'No date'}</div>
+          <div class="admin-paper-actions">
+            <button class="btn-edit" onclick="toggleEdit('${p.id}')">✏️ Edit</button>
+            <button class="btn-delete" onclick="deletePaper('${p.id}')">🗑 Delete</button>
+          </div>
+          <div class="edit-form" id="edit-${p.id}">
+            <input type="text" id="edit-title-${p.id}" placeholder="Title" value="${safeTitle}" />
+            <input type="text" id="edit-link-${p.id}" placeholder="Google Drive link" value="${safeLink}" />
+            <input type="text" id="edit-code-${p.id}" placeholder="Elective subject name" value="${safeCode}" />
+            <button class="btn-save" onclick="savePaper('${p.id}')">✓ Save Changes</button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  window.toggleEdit = function(id) {
+    document.getElementById(`edit-${id}`).classList.toggle('open');
+  };
+
+  window.deletePaper = async function(id) {
+    if (!confirm('Delete this paper? This cannot be undone.')) return;
+    try {
+      await deleteDoc(doc(db, 'papers', id));
+      renderAdminPapers();
+    } catch (err) {
+      alert('Error deleting: ' + err.message);
+    }
+  };
+
+  window.savePaper = async function(id) {
+    const title = document.getElementById(`edit-title-${id}`).value.trim();
+    const link  = document.getElementById(`edit-link-${id}`).value.trim();
+    const code  = document.getElementById(`edit-code-${id}`).value.trim();
+    try {
+      await updateDoc(doc(db, 'papers', id), { title, link, code });
+      document.getElementById(`edit-${id}`).classList.remove('open');
+      renderAdminPapers();
+    } catch (err) {
+      alert('Error saving: ' + err.message);
+    }
+  };
+
+  // Close modal when clicking outside
+  document.getElementById('adminOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeAdmin();
+  });
+
+  // Enter key triggers password check
+  document.getElementById('adminPass').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') window.checkPass();
+  });
 </script>
 </body>
 </html>
